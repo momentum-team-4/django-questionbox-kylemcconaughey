@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
 
     # Third-party
     'debug_toolbar',
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 
     # Project-specific
     'users',
+    'questionbox',
 ]
 
 MIDDLEWARE = [
