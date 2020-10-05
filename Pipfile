@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 prospector = "*"
+black = "*"
 
 [packages]
 django = "*"
@@ -19,3 +20,6 @@ gunicorn = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true
