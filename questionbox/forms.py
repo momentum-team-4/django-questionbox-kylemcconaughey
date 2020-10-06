@@ -1,4 +1,4 @@
-from django.forms import ModelForm, CharField, Form, ChoiceField
+from django.forms import ModelForm
 from .models import Question, Answer
 
 
