@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.messages import success, error
 from django.db.models import Count, Min, F, Q
 from django.contrib.auth.decorators import login_required
-from .forms import *
+from .forms import QuestionForm, AnswerForm
 from .models import Question, Answer
 
 # Create your views here.
@@ -32,8 +32,23 @@ def homepage(request):
 
 @login_required
 def question_create(request):
-    # questionForm duh
-    pass
+    # Create a question to be asked
+    if request.method == "GET":
+        form = QuestionForm()
+
+    else:
+        form = QuestionForm(data=request.POST)
+
+        if form.is_valid():
+            temp = form.save(commit=False)
+            temp.user = request.user
+
+            temp.save()
+
+            success(request, "Your question was asked!")
+            return redirect(to="frontpage")
+
+    return render(request, "questionbox/question_create.html", {"form": form})
 
 
 @login_required
