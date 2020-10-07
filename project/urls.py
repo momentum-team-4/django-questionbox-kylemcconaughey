@@ -21,6 +21,11 @@ from users import views as users_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/", include("registration.backends.simple.urls")),
+    path("", questionbox_views.frontpage, name="frontpage"),
+    path(
+        "question/<int:pk>/", questionbox_views.question_detail, name="question_detail"
+    ),
 ]
 
 

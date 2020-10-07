@@ -7,12 +7,14 @@ from datetime import timedelta
 
 class Question(models.Model):
     title = models.CharField(max_length=255, null=False, blank=False)
-    
+
     body = models.TextField(null=False, blank=False)
-    
+
     asked_at = models.DateTimeField(auto_now_add=True)
-    
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related-name="questions")
+
+    user = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name="questions"
+    )
 
     def niceAsked(self):
         nice_asked = self.asked_at - timedelta(hours=4)
@@ -31,11 +33,15 @@ class Question(models.Model):
 
 class Answer(models.Model):
     body = models.TextField(null=False, blank=False)
-    
-    question = models.ForeignKey(to=Question, on_delete=models.CASCADE, related-name="answers")
-    
-    author = models.ForeignKey(to=User, on_delete=models.CASCADE, related-name="answers")
-    
+
+    question = models.ForeignKey(
+        to=Question, on_delete=models.CASCADE, related_name="answers"
+    )
+
+    author = models.ForeignKey(
+        to=User, on_delete=models.CASCADE, related_name="answers"
+    )
+
     answered_at = models.DateTimeField(auto_now_add=True)
 
     starred_by = models.ManyToManyField(

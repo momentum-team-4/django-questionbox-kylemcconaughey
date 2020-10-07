@@ -3,14 +3,25 @@ from django.contrib.messages import success, error
 from django.db.models import Count, Min, F, Q
 from django.contrib.auth.decorators import login_required
 from .forms import *
-from .models import *
+from .models import Question, Answer
 
 # Create your views here.
 
 
 def frontpage(request):
-    # list of all questions asked by all users
-    pass
+    questions = Question.objects.all()
+    return render(request, "questionbox/frontpage.html", {"questions": questions})
+
+
+def question_detail(request, pk):
+    # what the question title href leads to
+    question = get_object_or_404(Question, pk=pk)
+    answers = Answer.objects.filter(question=question)
+    return render(
+        request,
+        "questionbox/question_detail.html",
+        {"question": question, "answers": answers},
+    )
 
 
 @login_required
@@ -22,11 +33,6 @@ def homepage(request):
 @login_required
 def question_create(request):
     # questionForm duh
-    pass
-
-
-def question_detail(request, pk):
-    # what the question title href leads to
     pass
 
 
