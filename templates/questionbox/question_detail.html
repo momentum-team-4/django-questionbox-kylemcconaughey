@@ -15,8 +15,10 @@
 <p>Answered at: {{ answer.niceAnswered }}</p>
 {% endfor %}
 
-<h3>Have an answer?</h3>
-<form method="POST">
+<button id='answerbtn'>
+    <h3>Have an answer?</h3>
+</button>
+<form id="answerBox" method="POST" style="display: none;">
     {% csrf_token %}
 
     {{ form.as_p}}
@@ -28,5 +30,21 @@
 {% if question.user == request.user %}
 <button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
 {% endif %}
+
+<script>
+    function answerBox() {
+        var x = document.querySelector('#answerBox');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+
+    var btn = document.querySelector('#answerbtn')
+    btn.addEventListener("click", answerBox)
+
+</script>
+
 
 {% endblock %}
