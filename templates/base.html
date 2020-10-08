@@ -12,7 +12,29 @@
 </head>
 
 <header>
-    <h1>Hey Query</h1>
+    <div class="topbar">
+        <h1 class='title'>Hey Query</h1>
+
+        <div class='navBtns'>
+            {% if user.is_authenticated %}
+
+            <form>
+                <button type='submit' formaction="{% url 'homepage' %}">{{ user.username }}'s Homepage</button>
+            </form>
+
+            {% if user.is_superuser %}
+            <form>
+                <button type='submit' formaction="http://127.0.0.1:8000/admin/">Admin</button>
+            </form>
+            {% endif %}
+
+            <form>
+                <button type='submit' formaction="{% url 'auth_logout' %}">Logout</button>
+            </form>
+
+            {% endif %}
+        </div>
+    </div>
 </header>
 
 <body>

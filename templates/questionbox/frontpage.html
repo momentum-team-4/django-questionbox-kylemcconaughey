@@ -2,19 +2,13 @@
 
 {% block content %}
 
-<h2>Front Page</h2>
-<button class='newQustion'><a href="{% url 'question_create' %}">Ask a Question</a></button>
 
-{% if user.is_authenticated %}
-<button><a href="{% url 'homepage' %}">{{ user.username }}'s Homepage</a></button>
-{% if user.is_superuser %}<button><a href="http://127.0.0.1:8000/admin/">Admin</a></button>{% endif %}
-<button><a href="{% url 'auth_logout' %}">Logout</a></button>
-
-{% endif %}
-
+<form>
+    <button class='newQ' type='submit' formaction="{% url 'question_create' %}">Ask a Question!</button>
+</form>
 
 {% if not user.is_authenticated %}
-<button><a href="{% url 'auth_login' %}">Login</a></button>
+<button id='loginbtn'><a href="{% url 'auth_login' %}">Login</a></button>
 {% endif %}
 
 <div class='questionsList'>
