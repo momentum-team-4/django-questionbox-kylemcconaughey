@@ -15,6 +15,18 @@
 <p>Answered at: {{ answer.niceAnswered }}</p>
 {% endfor %}
 
+<h3>Have an answer?</h3>
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p}}
+    <input type='submit' value='Submit Answer'>
+</form>
+
 <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+{% if question.user == request.user %}
+<button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
+{% endif %}
 
 {% endblock %}

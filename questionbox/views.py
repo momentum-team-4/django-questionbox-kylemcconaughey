@@ -17,17 +17,12 @@ def question_detail(request, pk):
     # what the question title href leads to
     question = get_object_or_404(Question, pk=pk)
     answers = Answer.objects.filter(question=question)
+    form = AnswerForm()
     return render(
         request,
         "questionbox/question_detail.html",
-        {"question": question, "answers": answers},
+        {"question": question, "answers": answers, "form": form},
     )
-
-
-@login_required
-def homepage(request):
-    # User profile page, should have all the things a registered user can do
-    pass
 
 
 @login_required
@@ -46,9 +41,26 @@ def question_create(request):
             temp.save()
 
             success(request, "Your question was asked!")
-            return redirect(to="frontpage")
+            return redirect(to="question_detail", pk=temp.pk)
 
     return render(request, "questionbox/question_create.html", {"form": form})
+
+
+@login_required
+def question_delete(request, pk):
+    if request.method == "GET":
+        return render(request, "questionbox/question_delete.html")
+    else:
+        question = get_object_or_404(Question, pk=pk)
+        question.delete()
+        success(request, "Question has been deleted!")
+        return redirect(to="frontpage")
+
+
+@login_required
+def homepage(request):
+    # User profile page, should have all the things a registered user can do
+    pass
 
 
 @login_required
