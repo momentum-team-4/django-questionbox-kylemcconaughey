@@ -5,6 +5,6 @@
     margin: 0;
 }
 
-/* #answerBox {
-    display: none;
-} */
+a {
+    text-decoration: none;
+}

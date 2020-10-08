@@ -4,5 +4,38 @@
 
 <h2>Home Page</h2>
 
+<div class='navbar'>
+    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+    <button><a href="{% url 'question_create' %}">New Question</a></button>
+
+    <p>Hello {{ user.username }}!</p>
+
+    <button><a href="{% url 'auth_logout' %}">Logout</a></button>
+
+</div>
+
+<h3>Questions asked:</h3>
+{% for question in questions %}
+<p><a href="{% url 'question_detail' pk=question.pk %}">{{ question }}</a></p>
+{% endfor %}
+
+<br>
+<h3>Answers written:</h3>
+{% for answer in answers %}
+<p>{{ question }}</p>
+{% endfor %}
+<br>
+
+<h3>Starred Questions</h3>
+{% for sQ in starredQuestionss %}
+<p>{{ question }}</p>
+{% endfor %}
+
+<br>
+<h3>Starred Answers</h3>
+{% for sA in starredAnswers %}
+<p>{{ question }}</p>
+{% endfor %}
 
 {% endblock %}

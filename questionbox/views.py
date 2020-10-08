@@ -60,7 +60,22 @@ def question_delete(request, pk):
 @login_required
 def homepage(request):
     # User profile page, should have all the things a registered user can do
-    pass
+    questions = Question.objects.filter(user=request.user).annotate(
+        num_answers=Count("answers", distinct=True),
+    )
+    answers = Answer.objects.filter(author=request.user)
+    starredQuestions = request.user.starred_questions.all()
+    starredAnswers = request.user.starred_answers.all()
+    return render(
+        request,
+        "questionbox/homepage.html",
+        {
+            "questions": questions,
+            "answers": answers,
+            "starredQuestions": starredQuestions,
+            "starredAnswers": starredAnswers,
+        },
+    )
 
 
 @login_required

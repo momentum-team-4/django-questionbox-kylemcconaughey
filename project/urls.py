@@ -23,6 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("registration.backends.simple.urls")),
     path("", questionbox_views.frontpage, name="frontpage"),
+    path("homepage/", questionbox_views.homepage, name="homepage"),
     path(
         "question/<int:pk>/", questionbox_views.question_detail, name="question_detail"
     ),
