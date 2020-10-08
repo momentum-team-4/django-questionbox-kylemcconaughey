@@ -129,6 +129,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+
 # Custom user model
 
 AUTH_USER_MODEL = "users.User"

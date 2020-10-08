@@ -7,8 +7,9 @@
 
 {% if user.is_authenticated %}
 <button><a href="{% url 'homepage' %}">{{ user.username }}'s Homepage</a></button>
-
+{% if user.is_superuser %}<button><a href="http://127.0.0.1:8000/admin/">Admin</a></button>{% endif %}
 <button><a href="{% url 'auth_logout' %}">Logout</a></button>
+
 {% endif %}
 
 

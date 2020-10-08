@@ -18,10 +18,36 @@ def question_detail(request, pk):
     question = get_object_or_404(Question, pk=pk)
     answers = Answer.objects.filter(question=question)
     form = AnswerForm()
+    if request.method == "POST":
+        form = AnswerForm(data=request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.question = question
+            answer.author = request.user
+            answer.save()
+            return redirect(to="question_detail", pk=question.pk)
     return render(
         request,
         "questionbox/question_detail.html",
         {"question": question, "answers": answers, "form": form},
+    )
+
+
+@login_required
+def answer_create(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+
+    if request.method == "POST":
+        form = AnswerForm(data=request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.question = question
+            answer.save()
+            return redirect(to="question_detail", pk=question.pk)
+    return render(
+        request,
+        "questionbox/answer_create.html",
+        {"form": form, "question": question},
     )
 
 
@@ -76,12 +102,6 @@ def homepage(request):
             "starredAnswers": starredAnswers,
         },
     )
-
-
-@login_required
-def answer_create(request, pk):
-    # would love to have a textfield hidden that can be displayed on "click", whose contents are POSTed as the body of an answer that then gets displayed
-    pass
 
 
 @login_required
