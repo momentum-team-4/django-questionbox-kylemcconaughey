@@ -1,0 +1,3 @@
+How do I set the login default url? I see things about it, but not in the 'easy setup' or whatever.
+
+Thoughts on submitting forms from pages that aren't that form? More specifically/eloquently, I want to submit the AnswerForm from the question_detail page, rather than have a separate page. 
