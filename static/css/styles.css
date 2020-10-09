@@ -17,24 +17,19 @@ a {
 }
 
 
-/* CSS HEX */
-/* --light-cyan: #defffcff;
---lavender-web: #dadff7ff;
---gunmetal: #232c33ff;
---uranian-blue: #a6d9f7ff;
---black-coral: #60656fff; */
-
 .title {
     color: #232c33ff;
     font-size: 3.5rem;
     letter-spacing: 0.25rem;
+    padding: 0.25rem;
 }
 
 .topbar {
     display: flex;
     flex-flow: nowrap;
-    border: 2px solid black;
+    border: 2px solid #232c33ff;
     width: 100%;
+    border-radius: 10px;
 }
 
 .navBtns {
@@ -42,21 +37,27 @@ a {
     flex-direction: column;
     margin-left: auto;
     width: auto;
+    border-radius: 10px;
+
 }
 
 .navBtns button {
     width: 100%;
     padding: 0.25rem;
+
 }
 
 #loginbtn {
     margin-left: 100%;
+    border-radius: 10px;
+
 }
 
 button {
     background-color: #a6d9f7ff;
     cursor: pointer;
     padding: 0.25rem;
+    border-radius: 10px;
 
 }
 
@@ -68,11 +69,70 @@ button {
 }
 
 .questionsList p {
-    padding-top: 1rem;
+    padding-top: 2rem;
+    border-bottom: 2px solid #232c33ff;
 }
 
 .questionsList a {
     font-size: 2rem;
-    border: 2px solid black;
-
+    /* border: 2px solid #232c33ff; */
+    border-radius: 10px;
+    margin-top: 2rem;
+    padding: 0.25rem 0.5rem 0.25rem;
 }
+
+.As {
+    margin-top: 2rem;
+}
+
+.Qs {
+    margin: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.Qs h3 {
+    color: #60656fff;
+    padding: 1rem 0;
+}
+
+
+.answer {
+    border-top: 3px solid #232c33ff;
+    border-bottom: 3px solid #232c33ff;
+    border-radius: 20px;
+    margin: 1rem 0 1rem;
+    padding: 0.5rem;
+    background-image: linear-gradient(rgba(218, 223, 247, 0.5), rgba(222, 255, 252, 0.5), rgb(234, 247, 246))
+}
+
+#answerbtn {
+    margin: 1rem 0;
+    padding: 1rem;
+    font-size: 1.5rem;
+    background-color: #dadff7ff;
+    color: #60656fff;
+}
+
+.Abody {
+    font-size: 1.25rem;
+}
+
+.Aauthor {
+    color: #60656fff;
+    font-size: 1rem;
+}
+
+
+.qButtons a {
+    padding: 0.5rem;
+    font-size: 1.5rem;
+}
+
+
+
+/* CSS HEX
+--light-cyan: #defffcff;
+--lavender-web: #dadff7ff;
+--gunmetal: #232c33ff;
+--uranian-blue: #a6d9f7ff;
+--black-coral: #60656fff; */

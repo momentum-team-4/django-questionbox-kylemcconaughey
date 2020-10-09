@@ -2,22 +2,38 @@
 
 {% block content %}
 
-<h2>Question Details</h2>
+<div class='Qs'>
+    <h3>{{ question.title }}
+        {% if question.isStarred %}
+        <div id='heart'>❤️</div>
+        {% endif %}
+    </h3>
 
-<h3>Title: {{ question.title }}</h3>
+    <p>{{ question.body }}</p>
 
-<p>Body: {{ question.body }}</p>
+    <p>Asked at: {{ question.niceAsked }}</p>
+</div>
 
-<p>Asked at: {{ question.niceAsked }}</p>
+<div class='As'>
+    {% for answer in answers %}
+    <div class='answer'>
+        <p class='Abody'>
+            {{ answer.body }}
+            {% if answer.isStarred %}
+        <div id='heart'>❤️</div>
+        {% endif %}
+        </p>
+        <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
+    </div>
+    {% endfor %}
+</div>
 
-{% for answer in answers %}
-<p>Answers: {{ answer.body }}</p>
-<p>Answered at: {{ answer.niceAnswered }}</p>
-{% endfor %}
 
 <button id='answerbtn'>
     <h3>Have an answer?</h3>
 </button>
+
+
 <form id="answerBox" method="POST" style="display: none;">
     {% csrf_token %}
 
@@ -25,11 +41,15 @@
     <input type='submit' value='Submit Answer'>
 </form>
 
-<button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
 
-{% if question.user == request.user %}
-<button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
-{% endif %}
+<div class='qButtons'>
+    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+    {% if question.user == request.user %}
+    <button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
+    {% endif %}
+</div>
+
 
 <script>
     function answerBox() {

@@ -24,6 +24,11 @@ class Question(models.Model):
         to=User, related_name="starred_questions", blank=True
     )
 
+    def isStarred(self):
+        if self.user in self.starred_by.all():
+            return True
+        return False
+
     # either this or boolean on Answer
     # answered_by = models.OneToOneField(to=Answer, on_delete=models.CASCADE)
 
@@ -53,3 +58,11 @@ class Answer(models.Model):
     def niceAnswered(self):
         nice_answered = self.answered_at - timedelta(hours=4)
         return nice_answered.strftime("%A at %I:%M %p")
+
+    def isStarred(self):
+        if self.author in self.starred_by.all():
+            return True
+        return False
+
+    def __str__(self):
+        return f"{self.title}"
