@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.messages import success, error
 from django.db.models import Count, Min, F, Q
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_POST
 from .forms import QuestionForm, AnswerForm
 from .models import Question, Answer
 
@@ -113,3 +116,18 @@ def homepage(request):
             "starredAnswers": starredAnswers,
         },
     )
+
+
+@csrf_exempt
+@require_POST
+def toggle_starred_question(request, question_pk):
+    question = get_object_or_404(
+        Question.objects.filter(user=request.user), pk=question_pk
+    )
+
+    if question in request.user.starred_questions.all():
+        request.user.starred_questions.remove(question)
+        return JsonResponse({"starred": False})
+
+    request.user.starred_questions.add(question)
+    return JsonResponse({"starred": True})

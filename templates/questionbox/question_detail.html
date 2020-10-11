@@ -4,9 +4,13 @@
 
 <div class='Qs'>
     <h3>{{ question.title }}
-        {% if question.isStarred %}
-        <div id='heart'>❤️</div>
-        {% endif %}
+        <a id="toggle-starred" data-question-id="{{ question.pk }}" style="cursor: pointer">
+            {% if question.isStarred %}
+            &#9733;
+            {% else %}
+            &#9734;
+            {% endif %}
+        </a>
     </h3>
 
     <p>{{ question.body }}</p>
@@ -66,6 +70,27 @@
 
     var btn = document.querySelector('#answerbtn')
     btn.addEventListener("click", answerBox)
+
+
+
+    const toggleStarredLink = document.querySelector("#toggle-starred")
+    toggleStarredLink.addEventListener('click', function (e) {
+        e.preventDefault()
+        const questionId = toggleStarredLink.dataset['questionId']
+        fetch(`/question/${questionId}/starred/`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.starred) {
+                    toggleStarredLink.innerHTML = '&#9733;'
+                } else {
+                    toggleStarredLink.innerHTML = '&#9734;'
+                }
+            })
+
+    })
+
 
 </script>
 
