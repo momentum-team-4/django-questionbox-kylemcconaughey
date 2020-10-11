@@ -23,19 +23,19 @@
 <br>
 <h3>Answers written:</h3>
 {% for answer in answers %}
-<p>{{ question }}</p>
+<p class='answer'><a href="{% url 'question_detail' pk=answer.question.pk %}">{{ answer.body|truncatewords:25 }}</a></p>
 {% endfor %}
 <br>
 
 <h3>Starred Questions</h3>
 {% for sQ in starredQuestionss %}
-<p>{{ question }}</p>
+<p>{{ sQ.title }}</p>
 {% endfor %}
 
 <br>
 <h3>Starred Answers</h3>
 {% for sA in starredAnswers %}
-<p>{{ question }}</p>
+<p class='answer'><a href="{% url 'question_detail' pk=sA.question.pk %}">{{ sA.body|truncatewords:25 }}</a></p>
 {% endfor %}
 
 {% endblock %}

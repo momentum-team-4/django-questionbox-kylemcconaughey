@@ -9,14 +9,22 @@ from .models import Question, Answer
 
 
 def frontpage(request):
-    questions = Question.objects.all()
+    questions = Question.objects.all().annotate(
+        times_starred=Count("starred_by", distinct=True)
+    )
     return render(request, "questionbox/frontpage.html", {"questions": questions})
 
 
 def question_detail(request, pk):
     # what the question title href leads to
-    question = get_object_or_404(Question, pk=pk)
-    answers = Answer.objects.filter(question=question)
+
+    questions = Question.objects.all().annotate(
+        times_starred=Count("starred_by", distinct=True)
+    )
+    question = get_object_or_404(questions, pk=pk)
+    answers = Answer.objects.filter(question=question).annotate(
+        times_starred=Count("starred_by", distinct=True)
+    )
     form = AnswerForm()
     if request.method == "POST":
         form = AnswerForm(data=request.POST)
@@ -88,8 +96,11 @@ def homepage(request):
     # User profile page, should have all the things a registered user can do
     questions = Question.objects.filter(user=request.user).annotate(
         num_answers=Count("answers", distinct=True),
+        times_starred=Count("starred_by", distint=True),
     )
-    answers = Answer.objects.filter(author=request.user)
+    answers = Answer.objects.filter(author=request.user).annotate(
+        times_starred=Count("starred_by", distinct=True)
+    )
     starredQuestions = request.user.starred_questions.all()
     starredAnswers = request.user.starred_answers.all()
     return render(
@@ -102,15 +113,3 @@ def homepage(request):
             "starredAnswers": starredAnswers,
         },
     )
-
-
-@login_required
-def submitted_by_user(request):
-    # should have all the questions and answers submitted by user, set as links to said question/answer
-    pass
-
-
-@login_required
-def starred_by_user(request):
-    # Should have all the questions/answers that are starred by user
-    pass

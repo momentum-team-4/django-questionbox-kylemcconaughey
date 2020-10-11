@@ -70,7 +70,7 @@ button {
 
 .questionsList p {
     padding-top: 2rem;
-    border-bottom: 2px solid #232c33ff;
+    border-bottom: 2px solid #232c33ff; 
 }
 
 .questionsList a {
@@ -82,7 +82,8 @@ button {
 }
 
 .As {
-    margin-top: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .Qs {
