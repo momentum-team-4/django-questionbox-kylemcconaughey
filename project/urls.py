@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
 from questionbox import views as questionbox_views
-from users import views as users_views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
