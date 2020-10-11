@@ -23,11 +23,17 @@
     <div class='answer'>
         <p class='Abody'>
             {{ answer.body }}
-            {% if answer.isStarred %}
-        <div id='heart'>❤️</div>
-        {% endif %}
+
         </p>
         <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
+
+        <a id="toggle-Astar" data-answer-id="{{ answer.pk }}" style="cursor: pointer">
+            {% if answer.isStarred %}
+            &#9733;
+            {% else %}
+            &#9734;
+            {% endif %}
+
     </div>
     {% endfor %}
 </div>
@@ -91,6 +97,23 @@
 
     })
 
+    const toggleAnswerStar = document.querySelector("#toggle-Astar")
+    toggleAnswerStar.addEventListener('click', function (e) {
+        e.preventDefault()
+        const answerId = toggleAnswerStar.dataset['answerId']
+        fetch(`/answer/${answerId}/starred/`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.starred) {
+                    toggleAnswerStar.innerHTML = '&#9733;'
+                } else {
+                    toggleAnswerStar.innerHTML = '&#9734;'
+                }
+            })
+
+    })
 
 </script>
 

@@ -33,6 +33,11 @@ urlpatterns = [
         name="toggle_starred_question",
     ),
     path(
+        "answer/<int:answer_pk>/starred/",
+        questionbox_views.toggle_starred_answer,
+        name="toggle_starred_answer",
+    ),
+    path(
         "question/<int:pk>/answer/",
         questionbox_views.answer_create,
         name="question_create",

@@ -131,3 +131,16 @@ def toggle_starred_question(request, question_pk):
 
     request.user.starred_questions.add(question)
     return JsonResponse({"starred": True})
+
+
+@csrf_exempt
+@require_POST
+def toggle_starred_answer(request, answer_pk):
+    answer = get_object_or_404(Answer.objects.filter(author=request.user), pk=answer_pk)
+
+    if answer in request.user.starred_answers.all():
+        request.user.starred_answers.remove(answer)
+        return JsonResponse({"starred": False})
+
+    request.user.starred_answers.add(answer)
+    return JsonResponse({"starred": True})

@@ -17,7 +17,7 @@
 
 <h3>Questions asked:</h3>
 {% for question in questions %}
-<p><a href="{% url 'question_detail' pk=question.pk %}">{{ question }}</a></p>
+<p class="questionsList"><a href="{% url 'question_detail' pk=question.pk %}">{{ question }}</a></p>
 {% endfor %}
 
 <br>
@@ -28,8 +28,8 @@
 <br>
 
 <h3>Starred Questions</h3>
-{% for sQ in starredQuestionss %}
-<p>{{ sQ.title }}</p>
+{% for sQ in starredQuestions %}
+<p class="questionsList"><a href="{% url 'question_detail' pk=sQ.pk %}">{{ sQ.title }}</a></p>
 {% endfor %}
 
 <br>
