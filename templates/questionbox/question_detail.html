@@ -4,9 +4,13 @@
 
 <div class='Qs'>
     <h3>{{ question.title }}
-        {% if question.isStarred %}
-        <div id='heart'>❤️</div>
-        {% endif %}
+        <a id="toggle-starred" data-question-id="{{ question.pk }}" style="cursor: pointer">
+            {% if question.isStarred %}
+            &#9733;
+            {% else %}
+            &#9734;
+            {% endif %}
+        </a>
     </h3>
 
     <p>{{ question.body }}</p>
@@ -19,11 +23,23 @@
     <div class='answer'>
         <p class='Abody'>
             {{ answer.body }}
-            {% if answer.isStarred %}
-        <div id='heart'>❤️</div>
-        {% endif %}
+
         </p>
         <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
+
+        <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer" class='ansStar'>
+            {% if answer.isStarred %}
+            &#9733;
+            {% else %}
+            &#9734;
+            {% endif %}
+        </a>
+        {% if answer.author == request.user %}
+        <form>
+            <button class='deleteAnswer' type='submit' formaction="{% url 'answer_delete' pk=answer.pk %}">Delete this
+                Answer</button>
+        </form>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
@@ -44,9 +60,10 @@
 
 {% endif %}
 
+<button class='fpBtn'><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
 
 <div class='qButtons'>
-    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
 
     {% if question.user == request.user %}
     <button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
@@ -66,6 +83,47 @@
 
     var btn = document.querySelector('#answerbtn')
     btn.addEventListener("click", answerBox)
+
+
+
+    const toggleStarredLink = document.querySelector("#toggle-starred")
+    toggleStarredLink.addEventListener('click', function (e) {
+        e.preventDefault()
+        const questionId = toggleStarredLink.dataset['questionId']
+        fetch(`/question/${questionId}/starred/`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.starred) {
+                    toggleStarredLink.innerHTML = '&#9733;'
+                } else {
+                    toggleStarredLink.innerHTML = '&#9734;'
+                }
+            })
+
+    })
+
+    var taStars = document.querySelectorAll(".ansStar")
+
+    for (let i = 0; i < taStars.length; i++) {
+        taStars[i].addEventListener('click', function (e) {
+            e.preventDefault()
+            const answerId = taStars[i].dataset['answerId']
+            fetch(`/answer/${answerId}/starred/`, {
+                method: 'POST'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.starred) {
+                        taStars[i].innerHTML = '&#9733;'
+                    } else {
+                        taStars[i].innerHTML = '&#9734;'
+                    }
+                })
+
+        })
+    }
 
 </script>
 

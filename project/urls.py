@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from questionbox.views import answer_delete
 from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
 from questionbox import views as questionbox_views
-from users import views as users_views
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,6 +27,16 @@ urlpatterns = [
     path("accounts/profile/", questionbox_views.homepage, name="homepage"),
     path(
         "question/<int:pk>/", questionbox_views.question_detail, name="question_detail"
+    ),
+    path(
+        "question/<int:question_pk>/starred/",
+        questionbox_views.toggle_starred_question,
+        name="toggle_starred_question",
+    ),
+    path(
+        "answer/<int:answer_pk>/starred/",
+        questionbox_views.toggle_starred_answer,
+        name="toggle_starred_answer",
     ),
     path(
         "question/<int:pk>/answer/",
@@ -38,6 +49,10 @@ urlpatterns = [
         questionbox_views.question_delete,
         name="question_delete",
     ),
+    path(
+        "answer/delete/<int:pk>", questionbox_views.answer_delete, name="answer_delete"
+    ),
+    path("question/search/", questionbox_views.question_search, name="question_search"),
 ]
 
 

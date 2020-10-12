@@ -16,6 +16,13 @@ a {
     font-size: 1rem;
 }
 
+.navbar {
+    display: flex;
+    padding: 1rem 0 3rem;
+    justify-content: space-between;
+    width: 75%;
+}
+
 
 .title {
     color: #232c33ff;
@@ -129,6 +136,22 @@ button {
     font-size: 1.5rem;
 }
 
+
+.fpBtn {
+    margin: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    box-shadow: 2px 4px 2px;
+    position: fixed;
+    bottom: 25px;
+    right: 50px;
+    z-index: 999;
+    cursor: pointer;
+}
+
+.fpBtn a {
+    font-size: 1.5rem;
+}
 
 
 /* CSS HEX

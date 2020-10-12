@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.messages import success, error
 from django.db.models import Count, Min, F, Q
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.http import require_POST
 from .forms import QuestionForm, AnswerForm
 from .models import Question, Answer
 
@@ -92,6 +95,17 @@ def question_delete(request, pk):
 
 
 @login_required
+def answer_delete(request, pk):
+    if request.method == "GET":
+        return render(request, "questionbox/answer_delete.html")
+    else:
+        answer = get_object_or_404(Answer, pk=pk)
+        answer.delete()
+        success(request, "Answer has been delete!")
+        return redirect(to="question_detail", pk=answer.question.pk)
+
+
+@login_required
 def homepage(request):
     # User profile page, should have all the things a registered user can do
     questions = Question.objects.filter(user=request.user).annotate(
@@ -112,4 +126,46 @@ def homepage(request):
             "starredQuestions": starredQuestions,
             "starredAnswers": starredAnswers,
         },
+    )
+
+
+@csrf_exempt
+@require_POST
+def toggle_starred_question(request, question_pk):
+    question = get_object_or_404(
+        Question.objects.filter(user=request.user), pk=question_pk
+    )
+
+    if question in request.user.starred_questions.all():
+        request.user.starred_questions.remove(question)
+        return JsonResponse({"starred": False})
+
+    request.user.starred_questions.add(question)
+    return JsonResponse({"starred": True})
+
+
+@csrf_exempt
+@require_POST
+def toggle_starred_answer(request, answer_pk):
+    answer = get_object_or_404(Answer.objects.filter(author=request.user), pk=answer_pk)
+
+    if answer in request.user.starred_answers.all():
+        request.user.starred_answers.remove(answer)
+        return JsonResponse({"starred": False})
+
+    request.user.starred_answers.add(answer)
+    return JsonResponse({"starred": True})
+
+
+def question_search(request):
+    search_term = request.GET.get("q")
+    if search_term:
+        questions = Question.objects.filter(Q(title__icontains=search_term)).distinct()
+    else:
+        questions = None
+
+    return render(
+        request,
+        "questionbox/search.html",
+        {"questions": questions, "search_term": search_term},
     )
