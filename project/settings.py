@@ -66,6 +66,34 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+MARKDOWNIFY_MARKDOWN_EXTENSIONS = [
+    "markdown.extensions.extra",
+]
+
+
+MARKDOWNIFY_WHITELIST_TAGS = [
+    "a",
+    "abbr",
+    "acronym",
+    "b",
+    "blockquote",
+    "em",
+    "i",
+    "li",
+    "ol",
+    "p",
+    "strong",
+    "ul",
+    "h1",
+    "h2",
+    "table",
+    "thead",
+    "tbody",
+    "tr",
+    "th",
+    "td",
+]
+
 ROOT_URLCONF = "project.urls"
 
 TEMPLATES = [
