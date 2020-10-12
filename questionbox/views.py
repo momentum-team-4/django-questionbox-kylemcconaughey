@@ -144,3 +144,17 @@ def toggle_starred_answer(request, answer_pk):
 
     request.user.starred_answers.add(answer)
     return JsonResponse({"starred": True})
+
+
+def question_search(request):
+    search_term = request.GET.get("q")
+    if search_term:
+        questions = Question.objects.filter(Q(title__icontains=search_term)).distinct()
+    else:
+        questions = None
+
+    return render(
+        request,
+        "questionbox/search.html",
+        {"questions": questions, "search_term": search_term},
+    )

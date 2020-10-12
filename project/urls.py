@@ -48,6 +48,7 @@ urlpatterns = [
         questionbox_views.question_delete,
         name="question_delete",
     ),
+    path("question/search/", questionbox_views.question_search, name="question_search"),
 ]
 
 

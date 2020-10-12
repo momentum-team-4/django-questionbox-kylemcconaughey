@@ -27,12 +27,35 @@
         </p>
         <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
 
-        <a id="toggle-Astar" data-answer-id="{{ answer.pk }}" style="cursor: pointer">
+        <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer">
             {% if answer.isStarred %}
             &#9733;
             {% else %}
             &#9734;
             {% endif %}
+
+            <script>
+                var toggle = node.parentElement.parentElement
+                toggle.addEventListener('click', function (e) {
+                    e.preventDefault()
+                    var answerId = toggle.dataset['answerId']
+                    fetch(`/answer/${answerId}/starred/`, {
+                        method: 'POST'
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.starred) {
+                                toggle.innerHTML = '&#9733;'
+                            } else {
+                                toggle.innerHTML = '&#9734;'
+                            }
+                        })
+
+                })
+            </script>
+        </a>
+
+
 
     </div>
     {% endfor %}
@@ -97,23 +120,6 @@
 
     })
 
-    const toggleAnswerStar = document.querySelector("#toggle-Astar")
-    toggleAnswerStar.addEventListener('click', function (e) {
-        e.preventDefault()
-        const answerId = toggleAnswerStar.dataset['answerId']
-        fetch(`/answer/${answerId}/starred/`, {
-            method: 'POST'
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.starred) {
-                    toggleAnswerStar.innerHTML = '&#9733;'
-                } else {
-                    toggleAnswerStar.innerHTML = '&#9734;'
-                }
-            })
-
-    })
 
 
 </script>

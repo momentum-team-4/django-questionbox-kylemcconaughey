@@ -16,8 +16,12 @@
         <h1 class='title'>Hey Query</h1>
 
         <div class='navBtns'>
-            {% if user.is_authenticated %}
 
+            <form>
+                <button type="submit" formaction="{% url 'question_search' %}">Find a Query</button>
+            </form>
+
+            {% if user.is_authenticated %}
             <form>
                 <button type='submit' formaction="{% url 'homepage' %}">{{ user.username }}'s Homepage</button>
             </form>
