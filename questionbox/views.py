@@ -95,6 +95,17 @@ def question_delete(request, pk):
 
 
 @login_required
+def answer_delete(request, pk):
+    if request.method == "GET":
+        return render(request, "questionbox/answer_delete.html")
+    else:
+        answer = get_object_or_404(Answer, pk=pk)
+        answer.delete()
+        success(request, "Answer has been delete!")
+        return redirect(to="question_detail", pk=answer.question.pk)
+
+
+@login_required
 def homepage(request):
     # User profile page, should have all the things a registered user can do
     questions = Question.objects.filter(user=request.user).annotate(

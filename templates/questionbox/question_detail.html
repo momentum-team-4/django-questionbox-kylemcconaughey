@@ -27,36 +27,19 @@
         </p>
         <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
 
-        <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer">
+        <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer" class='ansStar'>
             {% if answer.isStarred %}
             &#9733;
             {% else %}
             &#9734;
             {% endif %}
-
-            <script>
-                var toggle = node.parentElement.parentElement
-                toggle.addEventListener('click', function (e) {
-                    e.preventDefault()
-                    var answerId = toggle.dataset['answerId']
-                    fetch(`/answer/${answerId}/starred/`, {
-                        method: 'POST'
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.starred) {
-                                toggle.innerHTML = '&#9733;'
-                            } else {
-                                toggle.innerHTML = '&#9734;'
-                            }
-                        })
-
-                })
-            </script>
         </a>
-
-
-
+        {% if answer.author == request.user %}
+        <form>
+            <button class='deleteAnswer' type='submit' formaction="{% url 'answer_delete' pk=answer.pk %}">Delete this
+                Answer</button>
+        </form>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
@@ -77,9 +60,10 @@
 
 {% endif %}
 
+<button class='fpBtn'><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
 
 <div class='qButtons'>
-    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
 
     {% if question.user == request.user %}
     <button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
@@ -120,7 +104,26 @@
 
     })
 
+    var taStars = document.querySelectorAll(".ansStar")
 
+    for (let i = 0; i < taStars.length; i++) {
+        taStars[i].addEventListener('click', function (e) {
+            e.preventDefault()
+            const answerId = taStars[i].dataset['answerId']
+            fetch(`/answer/${answerId}/starred/`, {
+                method: 'POST'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.starred) {
+                        taStars[i].innerHTML = '&#9733;'
+                    } else {
+                        taStars[i].innerHTML = '&#9734;'
+                    }
+                })
+
+        })
+    }
 
 </script>
 

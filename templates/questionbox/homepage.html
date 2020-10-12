@@ -2,16 +2,14 @@
 
 {% block content %}
 
-<h2>Home Page</h2>
 
 <div class='navbar'>
-    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+    <h2>{{ user.username }}'s Home Page</h2>
 
     <button><a href="{% url 'question_create' %}">New Question</a></button>
 
-    <p>Hello {{ user.username }}!</p>
-
-    <button><a href="{% url 'auth_logout' %}">Logout</a></button>
+    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
 
 </div>
 
