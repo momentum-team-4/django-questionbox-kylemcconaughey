@@ -18,6 +18,8 @@ psycopg2 = "*"
 django-heroku = "*"
 gunicorn = "*"
 django-registration-redux = "*"
+markdown = "*"
+bleach = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
 {% load static %}
+{% load markdownify %}
+
 <html lang="en">
 
 <head>
@@ -13,7 +15,9 @@
 
 <header>
     <div class="topbar">
-        <h1 class='title'>Hey Query</h1>
+        <a href="{% url 'frontpage' %}">
+            <h1 class='title'>Hey Query</h1>
+        </a>
 
         <div class='navBtns'>
 

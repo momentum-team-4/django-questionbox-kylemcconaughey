@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load markdownify %}
 
 <div class='Qs'>
     <h3>{{ question.title }}
@@ -13,16 +14,16 @@
         </a>
     </h3>
 
-    <p>{{ question.body }}</p>
+    <p>{{ question.body|markdownify }}</p>
 
-    <p>Asked at: {{ question.niceAsked }}</p>
+    <p class='Aauthor'>Asked on {{ question.niceAsked }}</p>
 </div>
 
 <div class='As'>
     {% for answer in answers %}
     <div class='answer'>
         <p class='Abody'>
-            {{ answer.body }}
+            {{ answer.body|markdownify }}
 
         </p>
         <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
