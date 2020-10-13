@@ -20,6 +20,8 @@ gunicorn = "*"
 django-registration-redux = "*"
 markdown = "*"
 bleach = "*"
+djangorestframework = "*"
+pygments = "*"
 
 [requires]
 python_version = "3.8"

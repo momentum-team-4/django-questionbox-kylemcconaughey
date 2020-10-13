@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "812eddbe183d5e6b71dd9e6e46b6caeaf6e674482ea130ea14e772ebbed850d4"
+            "sha256": "dbb7b178238c83e01f5ccb546aacd86bd198a6befcacb7adcfa3892917d604b5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -95,6 +95,14 @@
             "index": "pypi",
             "version": "==2.8"
         },
+        "djangorestframework": {
+            "hashes": [
+                "sha256:5c5071fcbad6dce16f566d492015c829ddb0df42965d488b878594aabc3aed21",
+                "sha256:d54452aedebb4b650254ca092f9f4f5df947cb1de6ab245d817b08b4f4156249"
+            ],
+            "index": "pypi",
+            "version": "==3.12.1"
+        },
         "gunicorn": {
             "hashes": [
                 "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626",
@@ -137,6 +145,14 @@
             ],
             "index": "pypi",
             "version": "==2.8.6"
+        },
+        "pygments": {
+            "hashes": [
+                "sha256:307543fe65c0947b126e83dd5a61bd8acbd84abec11f43caebaf5534cbc17998",
+                "sha256:926c3f319eda178d1bd90851e4317e6d8cdb5e292a3386aac9bd75eca29cf9c7"
+            ],
+            "index": "pypi",
+            "version": "==2.7.1"
         },
         "pyparsing": {
             "hashes": [
