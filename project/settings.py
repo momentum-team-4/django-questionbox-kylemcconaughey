@@ -92,6 +92,13 @@ MARKDOWNIFY_WHITELIST_TAGS = [
     "tr",
     "th",
     "td",
+    "p",
+]
+
+MARKDOWNIFY_WHITELIST_ATTRS = [
+    "href",
+    "src",
+    "alt",
 ]
 
 ROOT_URLCONF = "project.urls"
