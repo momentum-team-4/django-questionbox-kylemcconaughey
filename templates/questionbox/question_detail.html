@@ -16,17 +16,38 @@
 
     <p>{{ question.body|markdownify }}</p>
 
-    <p class='Aauthor'>Asked on {{ question.niceAsked }}</p>
+    <p class='Aauthor'>Asked on {{ question.niceAsked }} by {{ question.user.username }}</p>
 </div>
 
+<form id="answerBox" method="POST" style="display: none;">
+    {% csrf_token %}
+
+    {{ form.as_p}}
+    <input type='submit' value='Submit Answer'>
+</form>
+
+
 <div class='As'>
+    <h3>
+        Answers
+    </h3>
+
     {% for answer in answers %}
-    <div class='answer'>
+    <div class='answer' id="{{ answer.pk }}-id">
         <p class='Abody'>
             {{ answer.body|markdownify }}
-
         </p>
+
         <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
+
+        <a id="{{ answer.pk }}-check" data-check-id="{{ answer.pk }}" style="cursor:default" class='checkCorrect'>
+            {% if answer.isCorrect %}
+            Correct: &#9733;
+            {% else %}
+            Correct: &#9734;
+            {% endif %}
+        </a>
+
 
         <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer" class='ansStar'>
             {% if answer.isStarred %}
@@ -50,14 +71,6 @@
 <button id='answerbtn'>
     <h3>Have an answer?</h3>
 </button>
-
-
-<form id="answerBox" method="POST" style="display: none;">
-    {% csrf_token %}
-
-    {{ form.as_p}}
-    <input type='submit' value='Submit Answer'>
-</form>
 
 {% endif %}
 
@@ -125,8 +138,35 @@
 
         })
     }
+</script>
+
+{% if question.user == request.user %}
+<script>
+    var checkboxes = document.querySelectorAll(".checkCorrect")
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].style.cursor = 'pointer'
+        checkboxes[i].addEventListener('click', function (e) {
+            e.preventDefault()
+            const checkId = checkboxes[i].dataset['checkId']
+            fetch(`/answer/${checkId}/correct/`, {
+                method: 'POST'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.correct) {
+                        checkboxes[i].innerHTML = 'Correct: &#9733;'
+                    } else {
+                        checkboxes[i].innerHTML = 'Correct: &#9734;'
+                    }
+                })
+
+        })
+    }
 
 </script>
+{% endif %}
+
 
 
 {% endblock %}

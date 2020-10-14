@@ -39,6 +39,11 @@ urlpatterns = [
         name="toggle_starred_answer",
     ),
     path(
+        "answer/<int:answer_pk>/correct/",
+        questionbox_views.checkCorrect,
+        name="checkCorrect",
+    ),
+    path(
         "question/<int:pk>/answer/",
         questionbox_views.answer_create,
         name="question_create",

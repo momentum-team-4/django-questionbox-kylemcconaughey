@@ -18,7 +18,7 @@ class Question(models.Model):
 
     def niceAsked(self):
         nice_asked = self.asked_at - timedelta(hours=4)
-        return nice_asked.strftime("%A at %I:%M %p")
+        return nice_asked.strftime("%A, %b %d at %I:%M %p")
 
     starred_by = models.ManyToManyField(
         to=User, related_name="starred_questions", blank=True
@@ -53,11 +53,18 @@ class Answer(models.Model):
         to=User, related_name="starred_answers", blank=True
     )
 
-    correct = models.BooleanField(default=False)
+    correct = models.ManyToManyField(
+        to=User, related_name="correct_answers", blank=True
+    )
+
+    def isCorrect(self):
+        if self.author in self.correct.all():
+            return True
+        return False
 
     def niceAnswered(self):
         nice_answered = self.answered_at - timedelta(hours=4)
-        return nice_answered.strftime("%A at %I:%M %p")
+        return nice_answered.strftime("%A, %b %d at %I:%M %p")
 
     def isStarred(self):
         if self.author in self.starred_by.all():

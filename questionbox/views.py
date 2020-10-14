@@ -15,7 +15,9 @@ def frontpage(request):
     questions = Question.objects.all().annotate(
         times_starred=Count("starred_by", distinct=True)
     )
-    return render(request, "questionbox/frontpage.html", {"questions": questions})
+    return render(
+        request, "questionbox/frontpage.html", {"questions": reversed(questions)}
+    )
 
 
 def question_detail(request, pk):
@@ -40,7 +42,7 @@ def question_detail(request, pk):
     return render(
         request,
         "questionbox/question_detail.html",
-        {"question": question, "answers": answers, "form": form},
+        {"question": question, "answers": reversed(answers), "form": form},
     )
 
 
@@ -132,9 +134,7 @@ def homepage(request):
 @csrf_exempt
 @require_POST
 def toggle_starred_question(request, question_pk):
-    question = get_object_or_404(
-        Question.objects.filter(user=request.user), pk=question_pk
-    )
+    question = get_object_or_404(Question.objects.all(), pk=question_pk)
 
     if question in request.user.starred_questions.all():
         request.user.starred_questions.remove(question)
@@ -147,7 +147,7 @@ def toggle_starred_question(request, question_pk):
 @csrf_exempt
 @require_POST
 def toggle_starred_answer(request, answer_pk):
-    answer = get_object_or_404(Answer.objects.filter(author=request.user), pk=answer_pk)
+    answer = get_object_or_404(Answer.objects.all(), pk=answer_pk)
 
     if answer in request.user.starred_answers.all():
         request.user.starred_answers.remove(answer)
@@ -155,6 +155,19 @@ def toggle_starred_answer(request, answer_pk):
 
     request.user.starred_answers.add(answer)
     return JsonResponse({"starred": True})
+
+
+@csrf_exempt
+@require_POST
+def checkCorrect(request, answer_pk):
+    answer = get_object_or_404(Answer.objects.filter(author=request.user), pk=answer_pk)
+
+    if answer in request.user.correct_answers.all():
+        request.user.correct_answers.remove(answer)
+        return JsonResponse({"correct": False})
+
+    request.user.correct_answers.add(answer)
+    return JsonResponse({"correct": True})
 
 
 def question_search(request):
