@@ -29,9 +29,6 @@ class Question(models.Model):
             return True
         return False
 
-    # either this or boolean on Answer
-    # answered_by = models.OneToOneField(to=Answer, on_delete=models.CASCADE)
-
     def __str__(self):
         return f"{self.title}"
 
