@@ -61,6 +61,7 @@ urlpatterns = [
     ),
     path("question/search/", questionbox_views.question_search, name="question_search"),
     path("", include("api.urls")),
+    path("api-auth/", include("rest_framework.urls")),
 ]
 
 
