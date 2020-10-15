@@ -60,7 +60,7 @@ urlpatterns = [
         "answer/delete/<int:pk>", questionbox_views.answer_delete, name="answer_delete"
     ),
     path("question/search/", questionbox_views.question_search, name="question_search"),
-    path("", include("api.urls")),
+    path("api/", include("api.urls")),
     path("api-auth/", include("rest_framework.urls")),
 ]
 
