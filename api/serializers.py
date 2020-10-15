@@ -3,26 +3,28 @@ from questionbox.models import Question, Answer
 from users.models import User
 
 
-class QuestionSerializer(serializers.ModelSerializer):
+class QuestionSerializer(serializers.HyperlinkedModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+
     class Meta:
         model = Question
-        fields = ["id", "title", "body", "user"]
+        fields = ["url", "id", "title", "body", "user"]
 
     def create(self, validated_data):
         return Question.objects.create(**validated_data)
 
 
-class AnswerSerializer(serializers.Serializer):
+class AnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
         fields = ["id", "body"]
 
 
-class UserSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Question.objects.all()
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    questions = serializers.HyperlinkedRelatedField(
+        many=True, view_name="question-detail", read_only=True
     )
 
     class Meta:
         model = User
-        fields = ["id", "username", "questions"]
+        fields = ["url", "id", "username", "questions"]
