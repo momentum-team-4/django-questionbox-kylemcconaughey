@@ -58,18 +58,13 @@ class Answer(models.Model):
     )
 
     def isCorrect(self):
-        if self.author in self.correct.all():
+        if self in self.question.user.correct_answers.all():
             return True
         return False
 
     def niceAnswered(self):
         nice_answered = self.answered_at - timedelta(hours=4)
         return nice_answered.strftime("%A, %b %d at %I:%M %p")
-
-    def isStarred(self):
-        if self.author in self.starred_by.all():
-            return True
-        return False
 
     def __str__(self):
         return f"{self.body}"
