@@ -13,11 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from questionbox.views import answer_delete
 from django.contrib import admin
 from django.conf import settings
 from django.urls import include, path
+from rest_framework import routers
+
 from questionbox import views as questionbox_views
+from api import views as api_views
+
+
+api_router = routers.DefaultRouter()
+api_router.register("questions", api_views.QuestionViewSet, basename="question")
 
 
 urlpatterns = [
@@ -58,6 +64,8 @@ urlpatterns = [
         "answer/delete/<int:pk>", questionbox_views.answer_delete, name="answer_delete"
     ),
     path("question/search/", questionbox_views.question_search, name="question_search"),
+    path("api-auth/", include("rest_framework.urls")),
+    path("api/", include("api.urls")),
 ]
 
 
