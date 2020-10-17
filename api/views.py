@@ -68,4 +68,6 @@ class AnswerDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = AnswerSerializer
 
     def get_queryset(self):
-        return Answer.objects.filter(question__user=self.request.user)
+        if not self.request.user == Answer.author:
+            raise PermissionDenied()
+        return Answer.objects.filter(author=self.request.user)
