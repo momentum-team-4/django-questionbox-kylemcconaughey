@@ -160,7 +160,9 @@ def toggle_starred_answer(request, answer_pk):
 @csrf_exempt
 @require_POST
 def checkCorrect(request, answer_pk):
-    answer = get_object_or_404(Answer.objects.filter(author=request.user), pk=answer_pk)
+    answer = get_object_or_404(
+        Answer.objects.filter(question__user=request.user), pk=answer_pk
+    )
 
     if answer in request.user.correct_answers.all():
         request.user.correct_answers.remove(answer)

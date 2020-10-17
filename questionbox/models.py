@@ -25,7 +25,7 @@ class Question(models.Model):
     )
 
     def isStarred(self):
-        if self.user in self.starred_by.all():
+        if self.user in self.user.starred_questions.all():
             return True
         return False
 
