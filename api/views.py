@@ -46,10 +46,12 @@ class QuestionViewSet(ModelViewSet):
     ]
 
     def get_queryset(self):
-        return Question.objects.filter(user=self.request.user)
+        return Question.objects.all()
 
     def perform_create(self, serializer):
-        return serializer.save(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return serializer.save(user=self.request.user)
+        raise PermissionDenied()
 
 
 class AnswerCreateView(CreateAPIView):
@@ -59,7 +61,7 @@ class AnswerCreateView(CreateAPIView):
     def perform_create(self, serializer):
         if not self.request.user.is_authenticated:
             raise PermissionDenied()
-        serializer.save()
+        serializer.save(author=self.request.user)
 
 
 class AnswerDetailView(RetrieveUpdateDestroyAPIView):

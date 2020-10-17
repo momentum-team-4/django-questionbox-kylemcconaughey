@@ -11,10 +11,7 @@ class AnswerSerializer(serializers.HyperlinkedModelSerializer):
 class EmbeddedAnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
-        fields = [
-            "url",
-            "body",
-        ]
+        fields = ["question", "url", "body"]
 
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
@@ -23,4 +20,11 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Question
-        fields = ["url", "title", "id", "body", "answers", "user"]
+        fields = [
+            "title",
+            "id",
+            "url",
+            "user",
+            "body",
+            "answers",
+        ]
