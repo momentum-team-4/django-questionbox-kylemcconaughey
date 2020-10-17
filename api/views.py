@@ -21,7 +21,7 @@ PATCH  /api/answers/<pk>/  Delete an answer
 """
 
 
-class IsOwnerOrReadOnly(permissions.BasePermission):
+class WroteOrRead(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
@@ -42,7 +42,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionSerializer
     permission_classes = [
-        IsOwnerOrReadOnly,
+        WroteOrRead,
     ]
 
     def get_queryset(self):
