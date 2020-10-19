@@ -29,12 +29,12 @@
             <form>
                 <button type='submit' formaction="{% url 'homepage' %}">{{ user.username }}'s Homepage</button>
             </form>
-
+            <!-- 
             {% if user.is_superuser %}
             <form>
                 <button type='submit' formaction="http://127.0.0.1:8000/admin/">Admin</button>
             </form>
-            {% endif %}
+            {% endif %} -->
 
             <form>
                 <button type='submit' formaction="{% url 'auth_logout' %}">Logout</button>
