@@ -54,7 +54,9 @@ class Answer(models.Model):
     )
 
     def isStarred(self):
-        pass
+        if self.author in self.starred_by.all():
+            return True
+        return False
 
     correct = models.ManyToManyField(
         to=User, related_name="correct_answers", blank=True
