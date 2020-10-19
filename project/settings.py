@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third-party
+    "rest_framework",
     "debug_toolbar",
     "django_extensions",
     "markdownify",
@@ -100,6 +101,20 @@ MARKDOWNIFY_WHITELIST_ATTRS = [
     "src",
     "alt",
 ]
+
+
+# REST Framework settings
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+}
+
 
 ROOT_URLCONF = "project.urls"
 
