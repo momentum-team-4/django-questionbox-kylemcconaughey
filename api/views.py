@@ -6,7 +6,8 @@ from rest_framework.generics import (
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import permissions
 from questionbox.models import Question, Answer
-from .serializers import AnswerSerializer, QuestionSerializer
+from .serializers import AnswerSerializer, QuestionSerializer, UserSerializer
+from users.models import User
 
 """
 GET    /api/questions/      Get a list of all questions you are allowed to see
@@ -39,6 +40,24 @@ class WroteOrRead(permissions.BasePermission):
         return False
 
 
+class AuthorOrRead(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.user.is_authenticated:
+            return True
+
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if obj.author == request.user:
+            return True
+
+        return False
+
+
 class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionSerializer
     permission_classes = [
@@ -54,9 +73,33 @@ class QuestionViewSet(ModelViewSet):
         raise PermissionDenied()
 
 
-class AnswerCreateView(CreateAPIView):
+# class AnswerCreateView(CreateAPIView):
+#     serializer_class = AnswerSerializer
+#     queryset = Answer.objects.all()
+
+# def perform_create(self, serializer):
+#     if not self.request.user.is_authenticated:
+#         raise PermissionDenied()
+#     serializer.save(author=self.request.user)
+
+
+# class AnswerDetailView(RetrieveUpdateDestroyAPIView):
+#     serializer_class = AnswerSerializer
+
+#     def get_queryset(self):
+#         if not self.request.user == Answer.author:
+#             raise PermissionDenied()
+#         return Answer.objects.filter(author=self.request.user)
+
+
+class AnswerViewSet(ModelViewSet):
     serializer_class = AnswerSerializer
-    queryset = Answer.objects.all()
+    permission_classes = [
+        AuthorOrRead,
+    ]
+
+    def get_queryset(self):
+        return Answer.objects.all()
 
     def perform_create(self, serializer):
         if not self.request.user.is_authenticated:
@@ -64,10 +107,11 @@ class AnswerCreateView(CreateAPIView):
         serializer.save(author=self.request.user)
 
 
-class AnswerDetailView(RetrieveUpdateDestroyAPIView):
-    serializer_class = AnswerSerializer
+class UserViewSet(ModelViewSet):
+    serializer_class = UserSerializer
+    permission_classes = [
+        WroteOrRead,
+    ]
 
     def get_queryset(self):
-        if not self.request.user == Answer.author:
-            raise PermissionDenied()
-        return Answer.objects.filter(author=self.request.user)
+        return User.objects.all()

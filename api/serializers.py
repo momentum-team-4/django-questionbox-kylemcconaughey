@@ -4,15 +4,19 @@ from users.models import User
 
 
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Answer
-        fields = ["url", "body", "question"]
+        fields = ["author", "id", "url", "body", "isCorrect", "question"]
 
 
 class EmbeddedAnswerSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Answer
-        fields = ["id", "url", "body"]
+        fields = ["id", "author", "url", "isCorrect", "body"]
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -22,7 +26,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ["url", "id", "username", "questions"]
+        fields = ["username", "id", "url", "questions"]
 
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
