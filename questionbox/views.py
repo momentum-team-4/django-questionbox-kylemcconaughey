@@ -42,7 +42,12 @@ def question_detail(request, pk):
     return render(
         request,
         "questionbox/question_detail.html",
-        {"question": question, "answers": reversed(answers), "form": form},
+        {
+            "question": question,
+            "answers": reversed(answers),
+            "form": form,
+            "user": request.user,
+        },
     )
 
 

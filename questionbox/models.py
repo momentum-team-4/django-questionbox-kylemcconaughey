@@ -53,6 +53,9 @@ class Answer(models.Model):
         to=User, related_name="starred_answers", blank=True
     )
 
+    def isStarred(self):
+        pass
+
     correct = models.ManyToManyField(
         to=User, related_name="correct_answers", blank=True
     )

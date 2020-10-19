@@ -12,11 +12,14 @@
             &#9734;
             {% endif %}
         </a>
+
     </h3>
-
     <p>{{ question.body|markdownify }}</p>
-
-    <p class='Aauthor'>Asked on {{ question.niceAsked }} by {{ question.user.username }}</p>
+    <div class='Aauthor'>
+        <p>Asked on {{ question.niceAsked }} by {{ question.user.username }}</p>
+        {% if question.times_starred > 0 %}
+        <p>Starred by {{ question.times_starred }} users</p> {% endif %}
+    </div>
 </div>
 
 <form id="answerBox" method="POST" style="display: none;">
@@ -50,17 +53,22 @@
 
 
         <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer" class='ansStar'>
-            {% if answer in user.starred_answers %}
+            {% if user in answer.starred_by %}
             &#9733;
             {% else %}
             &#9734;
             {% endif %}
         </a>
+        <p>{{ answer.starred_by }}</p>
+
         {% if answer.author == request.user %}
         <form>
             <button class='deleteAnswer' type='submit' formaction="{% url 'answer_delete' pk=answer.pk %}">Delete this
                 Answer</button>
         </form>
+        {% endif %}
+        {% if answer.times_starred > 0 %}
+        <p>Starred by {{ answer.times_starred }} users</p>
         {% endif %}
     </div>
     {% endfor %}

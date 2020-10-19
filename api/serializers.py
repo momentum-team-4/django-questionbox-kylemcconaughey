@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from questionbox.models import Question, Answer
+from users.models import User
 
 
 class AnswerSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,6 +13,16 @@ class EmbeddedAnswerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Answer
         fields = ["id", "url", "body"]
+
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    questions = serializers.HyperlinkedRelatedField(
+        many=True, view_name="question-detail", read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = ["url", "id", "username", "questions"]
 
 
 class QuestionSerializer(serializers.HyperlinkedModelSerializer):
