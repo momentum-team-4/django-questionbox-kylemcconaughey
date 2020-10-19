@@ -53,11 +53,6 @@ class Answer(models.Model):
         to=User, related_name="starred_answers", blank=True
     )
 
-    def isStarred(self):
-        if self.author in self.starred_by.all():
-            return True
-        return False
-
     correct = models.ManyToManyField(
         to=User, related_name="correct_answers", blank=True
     )

@@ -6,7 +6,7 @@
 <div class='Qs'>
     <h3>{{ question.title }}
         <a id="toggle-starred" data-question-id="{{ question.pk }}" style="cursor: pointer">
-            {% if question.isStarred %}
+            {% if question in user.starred_questions.all %}
             &#9733;
             {% else %}
             &#9734;
@@ -53,13 +53,13 @@
 
 
         <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer" class='ansStar'>
-            {% if user in answer.starred_by %}
+            {% if answer in user.starred_answers.all %}
             &#9733;
             {% else %}
             &#9734;
             {% endif %}
         </a>
-        <p>{{ answer.starred_by }}</p>
+
 
         {% if answer.author == request.user %}
         <form>
@@ -87,7 +87,7 @@
 
 <div class='qButtons'>
 
-    {% if question.user == request.user %}
+    {% if question.user == user %}
     <button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
     {% endif %}
 </div>

@@ -46,7 +46,6 @@ def question_detail(request, pk):
             "question": question,
             "answers": reversed(answers),
             "form": form,
-            "user": request.user,
         },
     )
 
