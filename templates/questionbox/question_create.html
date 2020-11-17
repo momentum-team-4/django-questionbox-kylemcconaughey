@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load markdownify %}
+
+<h2>Ask a Question</h2>
+
+
+<button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+<form method="POST" id="create_form">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Post Question">
+</form>
+
+
+{% endblock %}

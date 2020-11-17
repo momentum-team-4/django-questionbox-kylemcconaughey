@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load markdownify %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href="{% static 'css/styles.css' %}">
+
+    <title>Hey Query</title>
+</head>
+
+<header>
+    <div class="topbar">
+        <a href="{% url 'frontpage' %}">
+            <h1 class='title'>Hey Query</h1>
+        </a>
+
+        <div class='navBtns'>
+
+            <form>
+                <button type="submit" formaction="{% url 'question_search' %}">Find a Query</button>
+            </form>
+
+            {% if user.is_authenticated %}
+            <form>
+                <button type='submit' formaction="{% url 'homepage' %}">{{ user.username }}'s Homepage</button>
+            </form>
+            <!-- 
+            {% if user.is_superuser %}
+            <form>
+                <button type='submit' formaction="http://127.0.0.1:8000/admin/">Admin</button>
+            </form>
+            {% endif %} -->
+
+            <form>
+                <button type='submit' formaction="{% url 'auth_logout' %}">Logout</button>
+            </form>
+
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>

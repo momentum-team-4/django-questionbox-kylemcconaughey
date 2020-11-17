@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load markdownify %}
+
+<div class='Qs'>
+    <h3>{{ question.title }}
+        <a id="toggle-starred" data-question-id="{{ question.pk }}" style="cursor: pointer">
+            {% if question in user.starred_questions.all %}
+            &#9733;
+            {% else %}
+            &#9734;
+            {% endif %}
+        </a>
+
+    </h3>
+    <p>{{ question.body|markdownify }}</p>
+    <div class='Aauthor'>
+        <p>Asked on {{ question.niceAsked }} by {{ question.user.username }}</p>
+        {% if question.times_starred > 0 %}
+        <p>Starred by {{ question.times_starred }} users</p> {% endif %}
+    </div>
+</div>
+
+<form id="answerBox" method="POST" style="display: none;">
+    {% csrf_token %}
+
+    {{ form.as_p}}
+    <input type='submit' value='Submit Answer'>
+</form>
+
+
+<div class='As'>
+    <h3>
+        Answers
+    </h3>
+
+    {% for answer in answers %}
+    <div class='answer' id="{{ answer.pk }}-id">
+        <p class='Abody'>
+            {{ answer.body|markdownify }}
+        </p>
+
+        <p class='Aauthor'>Written by {{ answer.author }} on {{ answer.niceAnswered }}</p>
+
+        <a id="{{ answer.pk }}-check" data-check-id="{{ answer.pk }}" style="cursor:default" class='checkCorrect'>
+            {% if answer.isCorrect %}
+            Correct: &#9733;
+            {% else %}
+            Correct: &#9734;
+            {% endif %}
+        </a>
+
+
+        <a id="{{ answer.pk }}" data-answer-id="{{ answer.pk }}" style="cursor: pointer" class='ansStar'>
+            {% if answer in user.starred_answers.all %}
+            &#9733;
+            {% else %}
+            &#9734;
+            {% endif %}
+        </a>
+
+
+        {% if answer.author == request.user %}
+        <form>
+            <button class='deleteAnswer' type='submit' formaction="{% url 'answer_delete' pk=answer.pk %}">Delete this
+                Answer</button>
+        </form>
+        {% endif %}
+        {% if answer.times_starred > 0 %}
+        <p>Starred by {{ answer.times_starred }} users</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+
+
+{% if user.is_authenticated %}
+<button id='answerbtn'>
+    <h3>Have an answer?</h3>
+</button>
+
+{% endif %}
+
+<button class='fpBtn'><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+
+<div class='qButtons'>
+
+    {% if question.user == user %}
+    <button><a href="{% url 'question_delete' pk=question.pk %}">Delete Question</a></button>
+    {% endif %}
+</div>
+
+
+<script>
+    function answerBox() {
+        var x = document.querySelector('#answerBox');
+        if (x.style.display === 'none') {
+            x.style.display = 'block';
+        } else {
+            x.style.display = 'none';
+        }
+    }
+
+    var btn = document.querySelector('#answerbtn')
+    btn.addEventListener("click", answerBox)
+
+
+
+    const toggleStarredLink = document.querySelector("#toggle-starred")
+    toggleStarredLink.addEventListener('click', function (e) {
+        e.preventDefault()
+        const questionId = toggleStarredLink.dataset['questionId']
+        fetch(`/question/${questionId}/starred/`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.starred) {
+                    toggleStarredLink.innerHTML = '&#9733;'
+                } else {
+                    toggleStarredLink.innerHTML = '&#9734;'
+                }
+            })
+
+    })
+
+    var taStars = document.querySelectorAll(".ansStar")
+
+    for (let i = 0; i < taStars.length; i++) {
+        taStars[i].addEventListener('click', function (e) {
+            e.preventDefault()
+            const answerId = taStars[i].dataset['answerId']
+            fetch(`/answer/${answerId}/starred/`, {
+                method: 'POST'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.starred) {
+                        taStars[i].innerHTML = '&#9733;'
+                    } else {
+                        taStars[i].innerHTML = '&#9734;'
+                    }
+                })
+
+        })
+    }
+</script>
+
+{% if question.user == request.user %}
+<script>
+    var checkboxes = document.querySelectorAll(".checkCorrect")
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].style.cursor = 'pointer'
+        checkboxes[i].addEventListener('click', function (e) {
+            e.preventDefault()
+            const checkId = checkboxes[i].dataset['checkId']
+            fetch(`/answer/${checkId}/correct/`, {
+                method: 'POST'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.correct) {
+                        checkboxes[i].innerHTML = 'Correct: &#9733;'
+                    } else {
+                        checkboxes[i].innerHTML = 'Correct: &#9734;'
+                    }
+                })
+
+        })
+    }
+
+</script>
+{% endif %}
+
+
+
+{% endblock %}

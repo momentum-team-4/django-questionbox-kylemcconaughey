@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load markdownify %}
+{% block content %}
+
+
+<div class='navbar'>
+
+    <h2>{{ user.username }}'s Home Page</h2>
+
+    <button><a href="{% url 'question_create' %}">New Question</a></button>
+
+    <button><a href="{% url 'frontpage' %}">Back to Front Page</a></button>
+
+</div>
+
+<h3>Questions asked:</h3>
+{% for question in questions %}
+<p class="questionsList"><a href="{% url 'question_detail' pk=question.pk %}">{{ question }}</a></p>
+{% endfor %}
+
+<br>
+<h3>Answers written:</h3>
+{% for answer in answers %}
+<p class='answer'><a href="{% url 'question_detail' pk=answer.question.pk %}">{{ answer.body|truncatewords:25 }}</a></p>
+{% endfor %}
+<br>
+
+<h3>Starred Questions</h3>
+{% for sQ in starredQuestions %}
+<p class="questionsList"><a href="{% url 'question_detail' pk=sQ.pk %}">{{ sQ.title }}</a></p>
+{% endfor %}
+
+<br>
+<h3>Starred Answers</h3>
+{% for sA in starredAnswers %}
+<p class='answer'><a href="{% url 'question_detail' pk=sA.question.pk %}">{{ sA.body|truncatewords:25 }}</a></p>
+{% endfor %}
+
+{% endblock %}
